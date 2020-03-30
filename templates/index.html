@@ -1,0 +1,58 @@
+{% extends "/common.html" %}
+
+{% block content %}
+<div class="jumbotron ">
+    <div class="container text-center">
+        <h1> Home </h1>
+        <h5>Login Click <a href="/login">Here</a> <a href="/logout">Logout</a></h5>
+        {% for y in get_flashed_messages() %}
+        <h5><code>{{y}}</code></h5>
+        {% endfor %}
+    </div>
+    <div class="container text-right">
+
+        {{moment(session['loginTime']).fromNow(refresh=True)}}
+
+    </div>
+</div>
+<div class="container" id="data">
+    <div>
+        <form method="POST">
+            <input type="text" name="title" class="form-control" placeholder="Title" required>
+            <input type="text" name="post" class="form-control" placeholder="Description" required>
+            <input type="text" name="picture" class="form-control" placeholder="Picture URL">
+            <input type="submit" class="btn btn-primary text-center">
+
+        </form>
+    </div>
+    <div class="d-flex justify-content-around">
+
+        {% for x in y %}
+        <div >
+            <div class="card " style="width: 18rem;">
+                <img class="card-img-top" src="{{ x['picture'] }}" alt="Card image cap">
+
+                <div class="card-body">
+                    <h1 class="card-title">{{ x['post'] }}</h1>
+                    <p class="card-text">{{ x['post'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!--        {% if x['time'] %}-->
+
+        <!--        <p><b>{{x['title']}}</b></p>-->
+        <!--        <p>{{x['post']}}</p>-->
+
+        <!--        <h5>{{moment(x['time']).fromNow(refresh=True)}}</h5>-->
+        <!--        {% endif %}-->
+        {% else %}
+
+        <h1>No Entries Found</h1>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}

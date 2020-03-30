@@ -1,0 +1,35 @@
+{% extends "/common.html" %}
+
+{% block title%}
+Register
+{% endblock %}
+
+
+{% block content %}
+
+<div class="jumbotron text-center ">
+    <div class="container">
+        <h1> Register </h1>
+        <h5>Already Have an Account? Click <a href="/login">here</a></h5>
+
+        {% for y in get_flashed_messages() %}
+        <h5><code>{{y}}</code></h5>
+        {% endfor %}
+    </div>
+</div>
+<div class="container">
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-4 offset-4">
+                <input type="text" placeholder="First Name" name="firstname" class="form-control" required>
+                <input type="text" placeholder="Last Name" name="lastname" class="form-control" required>
+                <input type="email" placeholder="Email" name="email" class="form-control">
+                <input type="password" placeholder="Password" name="password" class="form-control" required>
+                <input type="submit" placeholder="Register User" name="submit" class="btn btn-primary text-center"
+                       required>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

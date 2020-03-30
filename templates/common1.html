@@ -1,0 +1,20 @@
+
+
+{% extends "/common.html" %}
+{% block styles %}
+{{ super() }}
+<style>
+    input{margin-bottom: 10px;}
+    #data{margin-bottom: 50px;}
+    .jumbotron{background: url('https://ctl.s6img.com/society6/img/ZbBxEfSHjfA45FBip80pHvevcd8/w_700/shams/swatch/~artwork,fw_6107,fh_3504,fx_-33,fy_-69,iw_6170,ih_3639/s6-original-art-uploads/society6/uploads/misc/b0e501ffc38a44a5afd0180d1d50246e/~~/color-gradient-background-fading-sunset-sky-colors-shams.jpg')}
+</style>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+
+{% endblock %}

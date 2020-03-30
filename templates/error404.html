@@ -1,0 +1,20 @@
+
+{% extends "/common.html" %}
+
+{% block title%}
+Error 404 - Page Not Found
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron text-center">
+    <div class="container">
+        <h4> {{e}} </h4>
+        <h5>Login Click <a href="/login">Here</a> <a href="/logout">Logout</a></h5>
+        {% for y in get_flashed_messages() %}
+        <h5><code>{{y}}</code></h5>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

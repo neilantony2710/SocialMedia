@@ -7,12 +7,12 @@ Error 500 - Internal Server Error
 
 {% block content %}
 
-<div class="jumbotron text-center">
-    <div class="container">
-        <h4> {{e}} </h4>
-        <h5>Login Click <a href="/login">Here</a> <a href="/logout">Logout</a></h5>
+<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
+    <div class="container text-center">
+        <h1> Error 500: Internal Server Error</h1>
+
         {% for y in get_flashed_messages() %}
-        <h5><code>{{y}}</code></h5>
+        <h5 class="text-light font-weight-bold" >{{y}}</h5>
         {% endfor %}
     </div>
 </div>

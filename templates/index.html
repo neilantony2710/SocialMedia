@@ -1,31 +1,31 @@
 {% extends "/common.html" %}
 
 {% block content %}
-<div class="jumbotron ">
+<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
     <div class="container text-center">
         <h1> Home </h1>
-        <h5>Login Click <a href="/login">Here</a> <a href="/logout">Logout</a></h5>
+
         {% for y in get_flashed_messages() %}
-        <h5><code>{{y}}</code></h5>
+        <h5 class="text-light font-weight-bold" >{{y}}</h5>
         {% endfor %}
     </div>
-    <div class="container text-right">
+    <div class="container text-center">
 
-        {{moment(session['loginTime']).fromNow(refresh=True)}}
+        <h4 class="font-weight-light">Welcome, {{ session['login'] }}</h4>
 
     </div>
 </div>
 <div class="container" id="data">
     <div>
         <form method="POST">
-            <input type="text" name="title" class="form-control" placeholder="Title" required>
-            <input type="text" name="post" class="form-control" placeholder="Description" required>
-            <input type="text" name="picture" class="form-control" placeholder="Picture URL">
-            <input type="submit" class="btn btn-primary text-center">
+            <input type="text" name="title" class="form-control my-2" placeholder="Title" required>
+            <input type="text" name="post" class="form-control my-2" placeholder="Description" required>
+            <input type="text" name="picture" class="form-control my-2" placeholder="Picture URL">
+            <input type="submit" class="btn btn-primary text-center mb-2">
 
         </form>
     </div>
-    <div class="d-flex justify-content-around">
+    <div class="d-flex justify-content-xl-around">
 
         {% for x in y %}
         <div >
@@ -33,7 +33,7 @@
                 <img class="card-img-top" src="{{ x['picture'] }}" alt="Card image cap">
 
                 <div class="card-body">
-                    <h1 class="card-title">{{ x['post'] }}</h1>
+                    <h1 class="card-title">{{ x['title'] }}</h1>
                     <p class="card-text">{{ x['post'] }}</p>
                 </div>
             </div>

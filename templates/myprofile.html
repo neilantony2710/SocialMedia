@@ -1,20 +1,34 @@
-
 {% extends "/common.html" %}
 
-{% block title%}
-Error 404 - Page Not Found
+{% block title %}
+My Profile
 {% endblock %}
 
 {% block content %}
-
 <div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
     <div class="container text-center">
-        <h1> Error 404: Invalid Url </h1>
+        <h1> My Profile </h1>
 
         {% for y in get_flashed_messages() %}
         <h5 class="text-light font-weight-bold" >{{y}}</h5>
         {% endfor %}
     </div>
 </div>
+<div class="container">
+<form>
+    <table class="table table-dark">
+       <tr>
+           <td>
+               <h3> Email </h3>
+           </td>
+           <td>
+               <h4 class="font-weight-light">{{y['email']}}</h4>
+           </td>
+       </tr>
+    </table>
+</form>
+
+</div>
+
 
 {% endblock %}

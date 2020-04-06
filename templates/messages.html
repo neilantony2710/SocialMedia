@@ -1,0 +1,48 @@
+{% extends "/common.html" %}
+
+{% block title%}
+Messages
+{% endblock %}
+
+
+{% block content %}
+
+<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
+    <div class="container text-center">
+        <h1> Messages </h1>
+
+        {% for y in get_flashed_messages() %}
+        <h5 class="text-light font-weight-bold" >{{y}}</h5>
+        {% endfor %}
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-2">
+            {% for x in inbox %}
+            <h4 class="font-weight-bold"> {{ x['title'] }}</h4>
+            <h5 class="font-weight-normal">{{ x['content'] }}</h5>
+            <p class="font-weight-light">From {{ x['from'] }}</p>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <form method="POST">
+                <div class="form-group">
+                    <h3 class="font-weight-normal">To:</h3>
+                    <input class="form-control" type="email" placeholder="john@gmail.com" name="to">
+                </div>
+                <div class="form-group">
+                    <h3 class="font-weight-normal">Subject:</h3>
+                    <input class="form-control" type="text" placeholder="Type Here..." name="title">
+                </div>
+                <div class="form-group">
+                    <h3 class="font-weight-normal">Content:</h3>
+                    <input class="form-control" type="text" placeholder="Type Here..." name="content">
+                </div>
+                <input class="form-control btn btn-outline-success" type="submit" name="Send">
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

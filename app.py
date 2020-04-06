@@ -20,7 +20,7 @@ def home():
 
             return redirect('/login')
         else:
-            y = mongo.db.SmxPosts.find().sort('time',-1).limit(5)
+            y = mongo.db.SmxPosts.find().sort('time', -1).limit(5)
 
             print(datetime.utcnow())
             return render_template('/index.html', y=y)
@@ -34,6 +34,50 @@ def home():
         flash('Post Created Successfully || Title: ' + y['title'] + ' || Post: ' + y['post'] + str(y['time']))
         return redirect('/')
 
+@app.route('/myprofile', methods=['GET','POST'])
+def myprofile():
+    y = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+    if request.method == 'GET':
+        return render_template('myprofile.html', y=y)
+    if request.method == 'POST':
+        pass
+
+
+@app.route('/follow<id>')
+def follow(id):
+    y = mongo.db.SMxUserxInfo.find_one({'_id':ObjectId(id)})
+    x = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+    x['following'].append(y['email'])
+    y['followers'].append(x['email'])
+    mongo.db.SMxUserxInfo.save(x)
+    mongo.db.SMxUserxInfo.save(y)
+    return redirect('/')
+@app.route('/unfollow<id>')
+def unfollow(id):
+    y = mongo.db.SMxUserxInfo.find_one({'_id':ObjectId(id)})
+    x = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+    x['following'].remove(y['email'])
+    y['followers'].remove(x['email'])
+    mongo.db.SMxUserxInfo.save(x)
+    mongo.db.SMxUserxInfo.save(y)
+    return redirect('/')
+
+@app.route('/messages', methods=['GET', 'POST'])
+def messages():
+    if request.method == 'GET':
+        inbox = mongo.db.SMxMessages.find({'to': session['login']})
+        print(inbox)
+        return render_template('messages.html', inbox=inbox)
+    if request.method == 'POST':
+        y={}
+        y['to'] = request.form['to']
+        y['title'] = request.form['title']
+        y['content'] = request.form['content']
+        y['from'] = session['login']
+        print(y)
+        mongo.db.SMxMessages.insert_one(y)
+        flash('Message Sent')
+        return redirect('/messages')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -45,6 +89,8 @@ def register():
         y['lname'] = request.form['lastname']
         y['email'] = request.form['email']
         y['password'] = request.form['password']
+        y['following'] = []
+        y['followers'] = []
         print(y)
         x = mongo.db.SMxUserxInfo.find_one({'email': y['email']})
         if x is not None:
@@ -73,10 +119,21 @@ def login():
             return redirect('/login')
         else:
 
-            session['login'] = 'Success'
+            session['login'] = email
             session['loginTime'] = datetime.utcnow()
 
             flash('Success!')
+        return redirect('/')
+
+
+@app.route('/search', methods=['GET','POST'])
+def search():
+    if request.method == 'POST':
+
+        y = mongo.db.SMxUserxInfo.find({'fname':request.form['search']})
+        xy = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+        return render_template('search.html', y=y, xy=xy)
+    else:
         return redirect('/')
 
 
@@ -85,14 +142,18 @@ def logout():
     session.clear()
     return redirect('/login')
 
+
 @app.errorhandler(404)
 def bad_request(e):
     return render_template('error404.html', e=e)
+
+
 @app.errorhandler(500)
 def internal_error(e):
     return render_template('error500.html', e=e)
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
-
-#HW: Social Network
+# HW: Merge everything?, if already following a person, unfollow on search page w/button.

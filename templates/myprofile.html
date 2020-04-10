@@ -5,29 +5,53 @@ My Profile
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
+<div class="jumbotron text-center text-light"
+     style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
     <div class="container text-center">
         <h1> My Profile </h1>
 
         {% for y in get_flashed_messages() %}
-        <h5 class="text-light font-weight-bold" >{{y}}</h5>
+        <h5 class="text-light font-weight-bold">{{y}}</h5>
         {% endfor %}
     </div>
 </div>
 <div class="container">
-<form>
-    <table class="table table-dark">
-       <tr>
-           <td>
-               <h3> Email </h3>
-           </td>
-           <td>
-               <h4 class="font-weight-light">{{y['email']}}</h4>
-           </td>
-       </tr>
-    </table>
-</form>
-
+    <form method="POST">
+        <table class="table table-dark table-striped">
+            <tr>
+                <td>
+                    <h3> Email </h3>
+                </td>
+                <td>
+                    <h3 class="font-weight-light">{{y['email']}}</h3>
+                </td>
+            </tr>
+            <tr>
+                <td><h3> First Name </h3></td>
+                <td><input type="text" class="form-control" name="fname" value="{{y['fname']}}"></td>
+            </tr>
+            <tr>
+                <td><h3> Last Name </h3></td>
+                <td><input type="text" class="form-control" name="lname" value="{{y['lname']}}"></td>
+            </tr>
+            <tr>
+                <td>
+                    <h3>Password</h3>
+                </td>
+                <td>
+                    <input class="form-control" type="password" name="password" value="{{y['password']}}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3>Update All Information</h3>
+                </td>
+                <td>
+                <input type="submit" class="btn btn-outline-success">
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
 
 

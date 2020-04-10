@@ -5,12 +5,13 @@ Search
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
+<div class="jumbotron text-center text-light"
+     style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
     <div class="container text-center">
         <h1> Search </h1>
 
         {% for y in get_flashed_messages() %}
-        <h5 class="text-light font-weight-bold" >{{y}}</h5>
+        <h5 class="text-light font-weight-bold">{{y}}</h5>
         {% endfor %}
     </div>
 </div>
@@ -18,15 +19,19 @@ Search
     <div class="row">
         <div class="col-md-4 offset-4">
             {% for x in y %}
-             <h4 class="font-highlight-bold">  Name: {{ x['fname'] }} {{ x['lname'] }} </h4>
-            <h5 class="font-highlight-light">  Email: {{ x['email'] }}  </h5>
+
+            <h4 class="font-highlight-bold"> Name: {{ x['fname'] }} {{ x['lname'] }} </h4>
+            <h5 class="font-highlight-light"> Email: {{ x['email'] }} </h5>
             {% if x['email'] not in xy['following'] %}
+
             <a class="btn btn-outline-success" href="/follow{{x['_id']}}">Follow</a>
+
             {% else %}
             <a class="btn btn-outline-danger" href="/unfollow{{x['_id']}}">Unfollow</a>
             {% endif %}
             {% else %}
             <h4 class="font-highlight-bold text-center">No Users Found</h4>
+
             {% endfor %}
 
         </div>

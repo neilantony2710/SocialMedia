@@ -20,8 +20,13 @@ def home():
 
             return redirect('/login')
         else:
-            y = mongo.db.SmxPosts.find().sort('time', -1).limit(5)
-
+            y=[]
+            following = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+            following = following['following']
+            for z in following:
+                z = list(mongo.db.SmxPosts.find({'email': z}))
+                y.append(z)
+                print(y,z)
             print(datetime.utcnow())
             return render_template('/index.html', y=y)
     if request.method == "POST":
@@ -34,50 +39,61 @@ def home():
         flash('Post Created Successfully || Title: ' + y['title'] + ' || Post: ' + y['post'] + str(y['time']))
         return redirect('/')
 
-@app.route('/myprofile', methods=['GET','POST'])
+
+@app.route('/myprofile', methods=['GET', 'POST'])
 def myprofile():
-    y = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+    y = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
     if request.method == 'GET':
         return render_template('myprofile.html', y=y)
     if request.method == 'POST':
-        pass
+        y = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
+        y['fname'] = request.form['fname']
+        y['lname'] = request.form['lname']
+        y['password'] = request.form['password']
+        mongo.db.SMxUserxInfo.save(y)
+        return redirect('/myprofile')
 
 
 @app.route('/follow<id>')
 def follow(id):
-    y = mongo.db.SMxUserxInfo.find_one({'_id':ObjectId(id)})
-    x = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+    y = mongo.db.SMxUserxInfo.find_one({'_id': ObjectId(id)})
+    x = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
     x['following'].append(y['email'])
     y['followers'].append(x['email'])
     mongo.db.SMxUserxInfo.save(x)
     mongo.db.SMxUserxInfo.save(y)
     return redirect('/')
+
+
 @app.route('/unfollow<id>')
 def unfollow(id):
-    y = mongo.db.SMxUserxInfo.find_one({'_id':ObjectId(id)})
-    x = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+    y = mongo.db.SMxUserxInfo.find_one({'_id': ObjectId(id)})
+    x = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
     x['following'].remove(y['email'])
     y['followers'].remove(x['email'])
     mongo.db.SMxUserxInfo.save(x)
     mongo.db.SMxUserxInfo.save(y)
     return redirect('/')
 
+
 @app.route('/messages', methods=['GET', 'POST'])
 def messages():
     if request.method == 'GET':
-        inbox = mongo.db.SMxMessages.find({'to': session['login']})
+        inbox = mongo.db.SMxMessages.find({'to': session['login']}).sort('time',-1)
         print(inbox)
         return render_template('messages.html', inbox=inbox)
     if request.method == 'POST':
-        y={}
+        y = {}
         y['to'] = request.form['to']
         y['title'] = request.form['title']
         y['content'] = request.form['content']
         y['from'] = session['login']
+        y['time'] = datetime.utcnow()
         print(y)
         mongo.db.SMxMessages.insert_one(y)
         flash('Message Sent')
         return redirect('/messages')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -85,8 +101,8 @@ def register():
         return render_template('register.html')
     if request.method == 'POST':
         y = {}
-        y['fname'] = request.form['firstname']
-        y['lname'] = request.form['lastname']
+        y['fname'] = request.form['firstname'].title()
+        y['lname'] = request.form['lastname'].title()
         y['email'] = request.form['email']
         y['password'] = request.form['password']
         y['following'] = []
@@ -126,12 +142,19 @@ def login():
         return redirect('/')
 
 
-@app.route('/search', methods=['GET','POST'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
+        conditionalStatements = [{'fname': request.form['search'].title()}, {'lname': request.form['search'].title()},
+                                 {'email': request.form['search']}]
+        print(conditionalStatements)
+        y = list(mongo.db.SMxUserxInfo.find({'$or': conditionalStatements}))
+        xy = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
+        print(y)
+        for z in y:
+            if xy['email'] == z['email']:
+                y.remove(z)
 
-        y = mongo.db.SMxUserxInfo.find({'fname':request.form['search']})
-        xy = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
         return render_template('search.html', y=y, xy=xy)
     else:
         return redirect('/')
@@ -157,3 +180,4 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
 # HW: Merge everything?, if already following a person, unfollow on search page w/button.
+# for images: https://picsum.photos/images   https://picsum.photos/id/1/200/300

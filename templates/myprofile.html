@@ -47,7 +47,28 @@ My Profile
                     <h3>Update All Information</h3>
                 </td>
                 <td>
-                <input type="submit" class="btn btn-outline-success">
+                    <input type="submit" class="btn btn-outline-success">
+                </td>
+            </tr>
+            <tr >
+                <td>
+                    <h3>Posts</h3>
+                </td>
+                <td class="text-dark">{% for post in postData %}
+                    <div>
+                        <div class="card " style="width: 18rem;">
+                            <img class="card-img-top" src="{{ post['picture'] }}" alt="Card image cap">
+
+                            <div class="card-body">
+                                <h1 class="card-title">{{ post['title'] }}</h1>
+                                <h5 class="card-text">{{ post['post'] }}</h5>
+                                <p class="card-text font-weight-light">Posted By {{ post['email'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <h1>No Posts Found</h1>
+                    {% endfor %}
                 </td>
             </tr>
         </table>

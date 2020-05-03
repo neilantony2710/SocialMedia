@@ -25,30 +25,26 @@
 
         </form>
     </div>
-    <div class="d-flex justify-content-xl-around">
+    <div class="row row-cols-3 justify-content-around">
+        {% for post in y %}
 
-        {% for x in y %}
-        <div >
-            <div class="card " style="width: 18rem;">
-                <img class="card-img-top" src="{{ x['picture'] }}" alt="Card image cap">
+
+        <div class = 'col'>
+            <div class="card">
+                <img class="card-img-top" src="{{ post['picture'] }}" alt="Card image cap">
 
                 <div class="card-body">
-                    <h1 class="card-title">{{ x['title'] }}</h1>
-                    <p class="card-text">{{ x['post'] }}</p>
+                    <h1 class="card-title">{{ post['title'] }}</h1>
+                    <h5 class="card-text">{{ post['post'] }}</h5>
+                    <p class="card-text font-weight-light">Posted By {{ post['email'] }}</p>
                 </div>
             </div>
         </div>
 
-        <!--        {% if x['time'] %}-->
 
-        <!--        <p><b>{{x['title']}}</b></p>-->
-        <!--        <p>{{x['post']}}</p>-->
-
-        <!--        <h5>{{moment(x['time']).fromNow(refresh=True)}}</h5>-->
-        <!--        {% endif %}-->
         {% else %}
 
-        <h1>No Entries Found</h1>
+        <h1>No Posts Found</h1>
 
         {% endfor %}
 

@@ -16,6 +16,7 @@ moment = Moment(app)
 @app.route('/', methods=['POST', 'GET'])
 def home():
     if request.method == 'GET':
+
         if 'login' not in session:
 
             return redirect('/login')
@@ -23,10 +24,17 @@ def home():
             y=[]
             following = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
             following = following['following']
+            print('following',following)
             for z in following:
-                z = list(mongo.db.SmxPosts.find({'email': z}))
-                y.append(z)
-                print(y,z)
+                print('z',z)
+                currentPosts = list(mongo.db.SmxPosts.find({'email':z}))
+                for post in currentPosts:
+                    y.append(post)
+
+                #z = list(mongo.db.SmxPosts.find({'email': z}))
+
+
+
             print(datetime.utcnow())
             return render_template('/index.html', y=y)
     if request.method == "POST":
@@ -34,6 +42,7 @@ def home():
         y['title'] = request.form['title']
         y['post'] = request.form['post']
         y['picture'] = request.form['picture']
+        y['email'] = session['login']
         y['time'] = datetime.utcnow()
         mongo.db.SmxPosts.insert_one(y)
         flash('Post Created Successfully || Title: ' + y['title'] + ' || Post: ' + y['post'] + str(y['time']))
@@ -44,7 +53,9 @@ def home():
 def myprofile():
     y = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
     if request.method == 'GET':
-        return render_template('myprofile.html', y=y)
+        myPosts = list(mongo.db.SmxPosts.find({'email': session['login']}))
+
+        return render_template('myprofile.html', postData = myPosts, y=y)
     if request.method == 'POST':
         y = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
         y['fname'] = request.form['fname']
@@ -80,7 +91,7 @@ def unfollow(id):
 def messages():
     if request.method == 'GET':
         inbox = mongo.db.SMxMessages.find({'to': session['login']}).sort('time',-1)
-        print(inbox)
+        print(inbox,'inbox')
         return render_template('messages.html', inbox=inbox)
     if request.method == 'POST':
         y = {}

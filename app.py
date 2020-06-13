@@ -118,6 +118,7 @@ def register():
         y['password'] = request.form['password']
         y['following'] = []
         y['followers'] = []
+        y['schedule'] = {}
         print(y)
         x = mongo.db.SMxUserxInfo.find_one({'email': y['email']})
         if x is not None:
@@ -170,6 +171,35 @@ def search():
     else:
         return redirect('/')
 
+@app.route('/mySchedule')
+def mySchedule():
+    if 'login' in session:
+        currentUser = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+        currentSchedule = currentUser['schedule']
+        return render_template('mySchedule.html', currentSchedule=currentSchedule)
+
+    else:
+        return redirect('/login')
+
+@app.route('/addToSchedule/<day>/<slot>/<info>')
+def addSchedule(day, slot, info):
+    if slot.isnumeric() == False:
+        flash('Slot Invalid')
+        return redirect('/mySchedule')
+    if 'login' in session:
+        return_value = day + slot + info
+        current_schedule = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+        if 'schedule' not in current_schedule:
+            current_schedule['schedule'] = {}
+        current_schedule['schedule'][day+slot] = info
+
+        mongo.db.SMxUserxInfo.update_one({'email':session['login']}, {'$set':current_schedule})
+        flash(day+' slot '+slot+' updated.')
+        return redirect('/mySchedule')
+
+
+    else:
+        return redirect('/login')
 
 @app.route('/logout')
 def logout():
@@ -190,5 +220,5 @@ def internal_error(e):
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
-# HW: Merge everything?, if already following a person, unfollow on search page w/button.
-# for images: https://picsum.photos/images   https://picsum.photos/id/1/200/300
+# different colored buttons,(blue if data already there, green if empty)
+# research: https://getbootstrap.com/docs/4.0/layout/grid/ just classes

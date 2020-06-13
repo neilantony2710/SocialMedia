@@ -1,0 +1,100 @@
+{% extends "/common.html" %}
+
+{% block title%}
+Login
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center text-light"
+     style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
+    <div class="container text-center">
+        <h1> My Schedule </h1>
+
+        {% for y in get_flashed_messages() %}
+        <h5 class="text-light font-weight-bold">{{y}}</h5>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container">
+<div id="schedule">
+
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+
+    var x = document.getElementById('schedule');
+    var daysOfWeek = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+    var timeSlots = ['9-10','1-2','5-6','8-9'];
+    var currentSchedule = {{ currentSchedule|safe}};
+
+    for( y in daysOfWeek) {
+        var day = document.createElement('h1');
+        day.innerHTML = daysOfWeek[y];
+        day.setAttribute('class','text-capitalize');
+        var outerBox = document.createElement('div');
+        outerBox.setAttribute('class', 'row card-body');
+        var card = document.createElement('div')
+        var cardHeader = document.createElement('div')
+        cardHeader.setAttribute('class', 'card-header');
+        cardHeader.appendChild(day)
+        card.setAttribute('class', 'card my-5')
+        for( var yy = 0; yy <= 3; yy++){
+        var currentKey = daysOfWeek[y]+yy
+        var inputDiv = document.createElement('div');
+        inputDiv.id = 'input';
+        inputDiv.setAttribute('class', 'input-group col');
+        var submitDiv = document.createElement('div');
+        submitDiv.setAttribute('class', 'input-group-append')
+        submitDiv.id = 'submit';
+        var innerInputTextArea = document.createElement('input');
+        var innerInputButton = document.createElement('button');
+        innerInputButton.setAttribute('class', 'btn btn-success');
+        innerInputTextArea.type = 'text';
+        innerInputTextArea.id = daysOfWeek[y]+yy;
+        innerInputTextArea.setAttribute('class','form-control');
+        if ( currentKey in currentSchedule) {
+            innerInputTextArea.value = currentSchedule[currentKey];
+            innerInputButton.setAttribute('class', 'btn btn-danger')
+            console.log(currentKey)
+        }
+
+
+
+
+        innerInputButton.id = daysOfWeek[y]+yy+'button';
+        (function(day, slot){
+        innerInputButton.addEventListener('click', function(){
+        var enteredInfo = document.getElementById(day+slot).value
+        window.location.assign('/addToSchedule/'+day+'/'+slot+'/'+enteredInfo);
+        })
+       }) (daysOfWeek[y], yy)
+        innerInputButton.innerHTML = timeSlots[yy];
+
+
+        inputDiv.appendChild(innerInputTextArea);
+        submitDiv.appendChild(innerInputButton);
+        inputDiv.appendChild(submitDiv);
+        outerBox.appendChild(inputDiv);
+
+
+
+        }
+        card.appendChild(cardHeader)
+        card.appendChild(outerBox)
+
+        x.appendChild(card);
+
+        function onClickAction(clickedId) {
+        console.log(clickedId)
+
+
+
+        }
+
+
+    }
+</script>
+{% endblock %}

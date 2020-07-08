@@ -15,6 +15,7 @@ moment = Moment(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
+    return render_template('test.html')
     if request.method == 'GET':
 
         if 'login' not in session:
@@ -180,7 +181,16 @@ def mySchedule():
 
     else:
         return redirect('/login')
-
+@app.route('/addToSchedule/<day>/<slot>/')
+def removeslot(day, slot):
+    if 'login' in session:
+        current_schedule = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
+        if day+slot not in current_schedule['schedule']:
+            return redirect('/mySchedule')
+        else:
+            current_schedule['schedule'].pop(day+slot)
+            mongo.db.SMxUserxInfo.update_one({'email': session['login']}, {'$set': current_schedule})
+            return redirect('/mySchedule')
 @app.route('/addToSchedule/<day>/<slot>/<info>')
 def addSchedule(day, slot, info):
     if slot.isnumeric() == False:
@@ -192,12 +202,9 @@ def addSchedule(day, slot, info):
         if 'schedule' not in current_schedule:
             current_schedule['schedule'] = {}
         current_schedule['schedule'][day+slot] = info
-
         mongo.db.SMxUserxInfo.update_one({'email':session['login']}, {'$set':current_schedule})
         flash(day+' slot '+slot+' updated.')
         return redirect('/mySchedule')
-
-
     else:
         return redirect('/login')
 
@@ -220,5 +227,5 @@ def internal_error(e):
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
-# different colored buttons,(blue if data already there, green if empty)
-# research: https://getbootstrap.com/docs/4.0/layout/grid/ just classes
+
+

@@ -15,7 +15,6 @@ moment = Moment(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    return render_template('test.html')
     if request.method == 'GET':
 
         if 'login' not in session:

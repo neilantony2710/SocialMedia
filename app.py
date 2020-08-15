@@ -45,7 +45,7 @@ def home():
         y['email'] = session['login']
         y['time'] = datetime.utcnow()
         mongo.db.SmxPosts.insert_one(y)
-        flash('Post Created Successfully || Title: ' + y['title'] + ' || Post: ' + y['post'] + str(y['time']))
+        flash('Post Created Successfully || Title: ' + y['title'] + ' || Post: ' + y['post'] )
         return redirect('/')
 
 

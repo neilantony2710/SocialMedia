@@ -31,9 +31,9 @@ def home():
 
             # following = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
             # following = following['following']
-            # print('following', following)
+            #
             # for z in following:
-            #     print('z', z)
+            #
             #     currentPosts = list(mongo.db.SmxPosts.find({'email': z}))
             #     for post in currentPosts:
             #         y.append(post)
@@ -103,7 +103,7 @@ def deletepost(id):
 def messages():
     if request.method == 'GET':
         inbox = mongo.db.SMxMessages.find({'to': session['login']}).sort('time', -1)
-        print(inbox, 'inbox')
+
         return render_template('messages.html', inbox=inbox)
     if request.method == 'POST':
         y = {}
@@ -112,7 +112,7 @@ def messages():
         y['content'] = request.form['content']
         y['from'] = session['login']
         y['time'] = datetime.utcnow()
-        print(y)
+
         mongo.db.SMxMessages.insert_one(y)
         flash('Message Sent')
         return redirect('/messages')
@@ -131,7 +131,7 @@ def register():
         y['following'] = []
         y['followers'] = []
         y['schedule'] = {}
-        print(y)
+
         x = mongo.db.SMxUserxInfo.find_one({'email': y['email']})
         if x is not None:
             flash('Account with E-Mail already created.')
@@ -171,10 +171,10 @@ def search():
     if request.method == 'POST':
         conditionalStatements = [{'fname': request.form['search'].title()}, {'lname': request.form['search'].title()},
                                  {'email': request.form['search']}]
-        print(conditionalStatements)
+
         y = list(mongo.db.SMxUserxInfo.find({'$or': conditionalStatements}))
         xy = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
-        print(y)
+
         for z in y:
             if xy['email'] == z['email']:
                 y.remove(z)

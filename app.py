@@ -21,21 +21,26 @@ def home():
 
             return redirect('/login')
         else:
-            y=[]
-            following = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
-            following = following['following']
-            print('following',following)
-            for z in following:
-                print('z',z)
-                currentPosts = list(mongo.db.SmxPosts.find({'email':z}))
-                for post in currentPosts:
+            y = []
+
+            currentPosts = list(mongo.db.SmxPosts.find())
+            for post in currentPosts:
+                if post['email'] != session['login']:
                     y.append(post)
 
-                #z = list(mongo.db.SmxPosts.find({'email': z}))
+
+            # following = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
+            # following = following['following']
+            # print('following', following)
+            # for z in following:
+            #     print('z', z)
+            #     currentPosts = list(mongo.db.SmxPosts.find({'email': z}))
+            #     for post in currentPosts:
+            #         y.append(post)
+
+                # z = list(mongo.db.SmxPosts.find({'email': z}))
 
 
-
-            print(datetime.utcnow())
             return render_template('/index.html', y=y)
     if request.method == "POST":
         y = {}
@@ -45,8 +50,9 @@ def home():
         y['email'] = session['login']
         y['time'] = datetime.utcnow()
         mongo.db.SmxPosts.insert_one(y)
-        flash('Post Created Successfully || Title: ' + y['title'] + ' || Post: ' + y['post'] )
+        flash('Post Created Successfully || Title: ' + y['title'] + ' || Post: ' + y['post'])
         return redirect('/')
+
 
 
 @app.route('/myprofile', methods=['GET', 'POST'])
@@ -55,7 +61,7 @@ def myprofile():
     if request.method == 'GET':
         myPosts = list(mongo.db.SmxPosts.find({'email': session['login']}))
 
-        return render_template('myprofile.html', postData = myPosts, y=y)
+        return render_template('myprofile.html', postData=myPosts, y=y)
     if request.method == 'POST':
         y = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
         y['fname'] = request.form['fname']
@@ -87,11 +93,17 @@ def unfollow(id):
     return redirect('/')
 
 
+@app.route('/deletepost<id>')
+def deletepost(id):
+    mongo.db.SmxPosts.delete_one({'_id': ObjectId(id)})
+    return redirect('/myprofile')
+
+
 @app.route('/messages', methods=['GET', 'POST'])
 def messages():
     if request.method == 'GET':
-        inbox = mongo.db.SMxMessages.find({'to': session['login']}).sort('time',-1)
-        print(inbox,'inbox')
+        inbox = mongo.db.SMxMessages.find({'to': session['login']}).sort('time', -1)
+        print(inbox, 'inbox')
         return render_template('messages.html', inbox=inbox)
     if request.method == 'POST':
         y = {}
@@ -171,25 +183,30 @@ def search():
     else:
         return redirect('/')
 
+
 @app.route('/mySchedule')
 def mySchedule():
     if 'login' in session:
-        currentUser = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+        currentUser = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
         currentSchedule = currentUser['schedule']
         return render_template('mySchedule.html', currentSchedule=currentSchedule)
 
     else:
         return redirect('/login')
+
+
 @app.route('/addToSchedule/<day>/<slot>/')
 def removeslot(day, slot):
     if 'login' in session:
         current_schedule = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
-        if day+slot not in current_schedule['schedule']:
+        if day + slot not in current_schedule['schedule']:
             return redirect('/mySchedule')
         else:
-            current_schedule['schedule'].pop(day+slot)
+            current_schedule['schedule'].pop(day + slot)
             mongo.db.SMxUserxInfo.update_one({'email': session['login']}, {'$set': current_schedule})
             return redirect('/mySchedule')
+
+
 @app.route('/addToSchedule/<day>/<slot>/<info>')
 def addSchedule(day, slot, info):
     if slot.isnumeric() == False:
@@ -197,15 +214,16 @@ def addSchedule(day, slot, info):
         return redirect('/mySchedule')
     if 'login' in session:
         return_value = day + slot + info
-        current_schedule = mongo.db.SMxUserxInfo.find_one({'email':session['login']})
+        current_schedule = mongo.db.SMxUserxInfo.find_one({'email': session['login']})
         if 'schedule' not in current_schedule:
             current_schedule['schedule'] = {}
-        current_schedule['schedule'][day+slot] = info
-        mongo.db.SMxUserxInfo.update_one({'email':session['login']}, {'$set':current_schedule})
-        flash(day+' slot '+slot+' updated.')
+        current_schedule['schedule'][day + slot] = info
+        mongo.db.SMxUserxInfo.update_one({'email': session['login']}, {'$set': current_schedule})
+        flash(day + ' slot ' + slot + ' updated.')
         return redirect('/mySchedule')
     else:
         return redirect('/login')
+
 
 @app.route('/logout')
 def logout():
@@ -225,6 +243,3 @@ def internal_error(e):
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
-
-

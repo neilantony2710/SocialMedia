@@ -4,24 +4,30 @@
 Login
 {% endblock %}
 
+{% block pageHeader %} Login {% endblock %}
+
 {% block content %}
 
-<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
-    <div class="container text-center">
-        <h1> Login </h1>
 
-        {% for y in get_flashed_messages() %}
-        <h5 class="text-light font-weight-bold" >{{y}}</h5>
-        {% endfor %}
-    </div>
-</div>
+
+<!--<div class="jumbotron text-center text-light bg-dark" >-->
+<!--    <div class="container text-center">-->
+<!--        <h1> Login </h1>-->
+
+<!--        {% for y in get_flashed_messages() %}-->
+<!--        <h5 class="text-light font-weight-bold" >{{y}}</h5>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
 <div class="container">
     <form method="POST">
         <div class="row">
-            <div class="col-md-4 offset-4">
-                <input type="email" placeholder="Email" name="email" class="form-control co">
-                <input type="password" placeholder="Password" name="password" class="form-control">
-                <input type="submit" placeholder="Register User" name="submit" class="btn btn-primary text-center" >
+
+            <div class="col-md-4 offset-4 mt-4 mb-3">
+                <h3 class="text-light" >Login</h3>
+                <input type="email" placeholder="Email" name="email" class="form-control btn-outline-light bg-dark text-light  mb-3">
+                <input type="password" placeholder="Password" name="password" class="form-control btn-outline-light mb-3 bg-dark text-light">
+                <input type="submit" placeholder="Register User" name="submit" class="btn  text-center btn-outline-light btn-block " >
             </div>
         </div>
     </form>

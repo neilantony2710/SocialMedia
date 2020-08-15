@@ -1,36 +1,38 @@
 {% extends "/common.html" %}
-
+{% block pageHeader %} Home {% endblock %}
 {% block content %}
-<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
-    <div class="container text-center">
-        <h1> Home </h1>
+<!--<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">-->
+<!--    <div class="container text-center">-->
+<!--        <h1> Home </h1>-->
 
-        {% for y in get_flashed_messages() %}
-        <h5 class="text-light font-weight-bold" >{{y}}</h5>
-        {% endfor %}
-    </div>
-    <div class="container text-center">
+<!--        {% for y in get_flashed_messages() %}-->
+<!--        <h5 class="text-light font-weight-bold" >{{y}}</h5>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--    <div class="container text-center">-->
 
-        <h4 class="font-weight-light">Welcome, {{ session['login'] }}</h4>
+<!--        <h4 class="font-weight-light">Welcome, {{ session['login'] }}</h4>-->
 
-    </div>
-</div>
-<div class="container" id="data">
+<!--    </div>-->
+<!--</div>-->
+<div class="container text-light" id="data">
     <div>
-        <form method="POST">
-            <input type="text" name="title" class="form-control my-2" placeholder="Title" required>
-            <input type="text" name="post" class="form-control my-2" placeholder="Description" required>
-            <input type="text" name="picture" class="form-control my-2" placeholder="Picture URL">
-            <input type="submit" class="btn btn-primary text-center mb-2">
+        <form method="POST" class="text-light">
+            <h3 class="text-light mt-5 mb-2">Create Your Post Here:</h3>
+            <input type="text" name="title" class="form-control text-light bg-dark mt-3" placeholder="Title" required>
+            <input type="text" name="post" class="form-control text-light mt-3 bg-dark" placeholder="Description" required>
+            <input type="text" name="picture" class="form-control text-light my-3 bg-dark" placeholder="Picture URL">
+            <input type="submit" class="btn btn-outline-light btn-block  text-center mb-2">
 
         </form>
     </div>
+    <hr class="my-1 bg-light my-5">
     <div class="row row-cols-3 justify-content-around">
         {% for post in y %}
 
 
         <div class = 'col'>
-            <div class="card">
+            <div class="card bg-dark shadow my-3">
                 <img class="card-img-top" src="{{ post['picture'] }}" alt="Card image cap">
 
                 <div class="card-body">
@@ -41,14 +43,12 @@
             </div>
         </div>
 
-
-        {% else %}
-
-        <h1>No Posts Found</h1>
-
         {% endfor %}
 
     </div>
 
 </div>
+
+
+
 {% endblock %}

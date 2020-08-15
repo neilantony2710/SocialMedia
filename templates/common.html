@@ -8,13 +8,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
     <title>{%block title %}
         {% endblock %}</title>
 
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
-     style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
+<body class="bg-dark" style="font-family: 'Raleway', sans-serif;">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Neil's SM</a>
 
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -30,33 +31,51 @@
                 <a class="nav-link mt-2" href="/login">Login</a>
             </li>
             <li class="nav-item mt-2">
-                <a class="nav-link" href="/logout">Logout</a>
-            </li>
-            {% else %}
-            <li>
-                <a class="nav-link mt-2" href="/messages">Messages</a>
-            </li>
-            <li class="nav-item mt-2">
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link text-danger" href="/logout">Logout</a>
             </li>
             <li class="mt-2 nav-item">
+                {% for y in get_flashed_messages() %}
+                <p class="text-light mt-2 ml-5 text-center">{{y}}</p>
+                {% endfor %}
+            </li>
+
+            {% else %}
+
+
+            <li class="mt-2 nav-item">
                 <a class="nav-link" href="/myprofile">My Profile</a>
+            </li>
+             <li>
+                <a class="nav-link mt-2" href="/messages">Messages</a>
             </li>
             <li class="mt-2 nav-item">
                 <a class="nav-link" href="/mySchedule">My Schedule</a>
             </li>
+            <li class="nav-item mt-2">
+                <a class="nav-link text-danger " href="/logout">Logout</a>
+            </li>
             <li>
-                <form class="my-2 mx-2 form-inline " action="/search" method="POST">
-                    <input class="form-control" type="text" placeholder="Search" name="search">
-                    <input type="submit" value="Search" class="btn form-control btn-outline-success">
+                <form class="my-2 mx-2 form-inline" action="/search" method="POST">
+                    <input class="form-control shadow btn btn-outline-light mr-2 " type="text" placeholder="Email/Name"
+                           name="search">
+                    <input type="submit" value="Search" class="btn shadow form-control btn-outline-success">
                 </form>
             </li>
+
+            <li class="mt-2 nav-item">
+                {% for y in get_flashed_messages() %}
+                <p class="text-light mt-2 ml-5 text-center">{{y}}</p>
+                {% endfor %}
+            </li>
+
+
             {% endif %}
         </ul>
+        <h4 class="nav-link text-light "> {% block pageHeader %} {% endblock %} </h4>
     </div>
 
 </nav>
-
+<hr class="my-1 bg-light">
 
 {% block content %}
 {% endblock %}

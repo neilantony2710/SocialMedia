@@ -3,18 +3,18 @@
 {% block title%}
 Login
 {% endblock %}
-
+{% block pageHeader %} Schedule {% endblock %}
 {% block content %}
-<div class="jumbotron text-center text-light"
-     style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
-    <div class="container text-center">
-        <h1> My Schedule </h1>
+<!--<div class="jumbotron text-center text-light"-->
+<!--     style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">-->
+<!--    <div class="container text-center">-->
+<!--        <h1> My Schedule </h1>-->
 
-        {% for y in get_flashed_messages() %}
-        <h5 class="text-light font-weight-bold">{{y}}</h5>
-        {% endfor %}
-    </div>
-</div>
+<!--        {% for y in get_flashed_messages() %}-->
+<!--        <h5 class="text-light font-weight-bold">{{y}}</h5>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
 
 <div class="container">
 <div id="schedule">
@@ -32,21 +32,21 @@ Login
     var currentSchedule = {{ currentSchedule|safe}};
 
     for( y in daysOfWeek) {
-        var day = document.createElement('h1');
+        var day = document.createElement('h3');
         day.innerHTML = daysOfWeek[y];
         day.setAttribute('class','text-capitalize');
         var outerBox = document.createElement('div');
         outerBox.setAttribute('class', 'row card-body');
         var card = document.createElement('div')
         var cardHeader = document.createElement('div')
-        cardHeader.setAttribute('class', 'card-header');
+        cardHeader.setAttribute('class', 'card-header ');
         cardHeader.appendChild(day)
-        card.setAttribute('class', 'card my-5')
+        card.setAttribute('class', 'card my-5 bg-dark shadow text-light')
         for( var yy = 0; yy <= 3; yy++){
         var currentKey = daysOfWeek[y]+yy
         var inputDiv = document.createElement('div');
         inputDiv.id = 'input';
-        inputDiv.setAttribute('class', 'input-group col');
+        inputDiv.setAttribute('class', 'input-group  col');
         var submitDiv = document.createElement('div');
         submitDiv.setAttribute('class', 'input-group-append')
         submitDiv.id = 'submit';
@@ -55,7 +55,7 @@ Login
         innerInputButton.setAttribute('class', 'btn btn-success');
         innerInputTextArea.type = 'text';
         innerInputTextArea.id = daysOfWeek[y]+yy;
-        innerInputTextArea.setAttribute('class','form-control');
+        innerInputTextArea.setAttribute('class','form-control bg-dark text-light');
         if ( currentKey in currentSchedule) {
             innerInputTextArea.value = currentSchedule[currentKey];
             innerInputButton.setAttribute('class', 'btn btn-danger')

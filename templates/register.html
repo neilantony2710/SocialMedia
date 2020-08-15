@@ -4,27 +4,31 @@
 Register
 {% endblock %}
 
+{% block pageHeader %}
+Register
+{% endblock %}
 
 {% block content %}
 
-<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">
-    <div class="container text-center">
-        <h1> Register </h1>
+<!--<div class="jumbotron text-center text-light" style="background-image: url(https://images.wallpaperscraft.com/image/ocean_waves_aerial_view_141555_1920x1080.jpg); background-size: 100%">-->
+<!--    <div class="container text-center">-->
+<!--        <h1> Register </h1>-->
 
-        {% for y in get_flashed_messages() %}
-        <h5 class="text-light font-weight-bold" >{{y}}</h5>
-        {% endfor %}
-    </div>
-</div>
+<!--        {% for y in get_flashed_messages() %}-->
+<!--        <h5 class="text-light font-weight-bold" >{{y}}</h5>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
 <div class="container">
     <form method="POST">
         <div class="row">
             <div class="col-md-4 offset-4">
-                <input type="text" placeholder="First Name" name="firstname" class="form-control" required>
-                <input type="text" placeholder="Last Name" name="lastname" class="form-control" required>
-                <input type="email" placeholder="Email" name="email" class="form-control">
-                <input type="password" placeholder="Password" name="password" class="form-control" required>
-                <input type="submit" placeholder="Register User" name="submit" class="btn btn-primary text-center"
+                <h3 class="text-light mt-4">Register</h3>
+                <input type="text" placeholder="First Name" name="firstname" class="form-control mt-3 bg-dark text-light btn-outline-light" required>
+                <input type="text" placeholder="Last Name" name="lastname" class="form-control mt-3 bg-dark text-light btn-outline-light" required>
+                <input type="email" placeholder="Email" name="email" class="form-control mt-3 bg-dark text-light btn-outline-light">
+                <input type="password" placeholder="Password" name="password" class="form-control my-3 bg-dark text-light btn-outline-light" required>
+                <input type="submit" placeholder="Register User" name="submit" class="btn btn-outline-light btn-block text-center"
                        required>
             </div>
         </div>

@@ -3,27 +3,35 @@
 {% block title%}
 Search
 {% endblock %}
-
+{% block pageHeader %} Search Results {% endblock %}
 {% block content %}
 
 <div class="container">
     <div class="row">
         <div class="col-md-4 offset-4">
             {% for x in y %}
+            <div class="card mt-3 bg-dark text-light shadow">
+                <div class="card-header">
+                    <h4 class="font-highlight-bold"> Name: {{ x['fname'] }} {{ x['lname'] }} </h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="mb-4"> Email: {{ x['email'] }} </h5>
 
-            <h4 class="font-highlight-bold"> Name: {{ x['fname'] }} {{ x['lname'] }} </h4>
-            <h5 class="font-highlight-light"> Email: {{ x['email'] }} </h5>
-            {% if x['email'] not in xy['following'] %}
+                    {% if x['email'] not in xy['following'] %}
 
-            <a class="btn btn-outline-success" href="/follow{{x['_id']}}">Follow</a>
+                    <a class="btn btn-block btn-outline-success " href="/follow{{x['_id']}}">Follow</a>
 
-            {% else %}
-            <a class="btn btn-outline-danger" href="/unfollow{{x['_id']}}">Unfollow</a>
-            {% endif %}
-            {% else %}
-            <h4 class="font-highlight-bold text-center">No Users Found</h4>
+                    {% else %}
+                    <a class="btn btn-block btn-outline-danger" href="/unfollow{{x['_id']}}">Unfollow</a>
+                    {% endif %}
+                    {% else %}
+                    <h4 class="font-highlight-bold text-center">No Users Found</h4>
 
-            {% endfor %}
+                    {% endfor %}
+                </div>
+
+            </div>
+
 
         </div>
     </div>
